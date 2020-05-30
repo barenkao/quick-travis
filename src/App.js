@@ -78,7 +78,10 @@ function App() {
 
   if (user == null) {
     return (
-      <Authentication state={ {user, setUser} } />
+      <div>
+        <Authentication state={ {user, setUser} } />
+        <p>learn react</p>
+      </div>
     )}
   
   else {
@@ -92,7 +95,7 @@ function App() {
       </Box>
       <Box>
         <Box marginTop="10px">
-            <Typography>learn react</Typography>
+            <p>learn react</p>
             <Grid container justify='center' style={{paddingBottom: "10px"}}>
               <Grid item key="add-link-button">
                 <AddLink state = { {path, setPath} } userState= {{user, setUser}} />
@@ -104,30 +107,30 @@ function App() {
                 <DeleteLinksButton state={ {selected, setSelected} } itemState = { { data, setData } } userState = { {user, setUser} }/>
               </Grid>
             </Grid>
-          <Box 
-          borderRadius={10}
-          padding={1}
-          bgcolor={ box_color}
-          >
-           <DndProvider backend={Backend}>     
-            <Box component="div" marginBottom="10px">
-              <BackButton display="inline" state={ {path, setPath} } marginBottom="10px"/>
+            <Box 
+            borderRadius={10}
+            padding={1}
+            bgcolor={ box_color}
+            >
+            <DndProvider backend={Backend}>     
+              <Box component="div" marginBottom="10px">
+                <BackButton display="inline" state={ {path, setPath} } marginBottom="10px"/>
+              </Box>
+            </DndProvider> 
+              <DndProvider backend={Backend}>
+              <ItemList state = { {path, setPath} } itemState = { { data, setData } } userState = { {user, setUser} } selectedState={ { selected, setSelected } }/>
+              </DndProvider>
+            <Box fontSize={16} fontWeight={1000} marginTop="10px">
+              Current directory:
+            <Box fontSize={16} display="inline" fontColor="grey"> { path } </Box>
             </Box>
-          </DndProvider> 
-            <DndProvider backend={Backend}>
-            <ItemList state = { {path, setPath} } itemState = { { data, setData } } userState = { {user, setUser} } selectedState={ { selected, setSelected } }/>
-            </DndProvider>
-          <Box fontSize={16} fontWeight={1000} marginTop="10px">
-            Current directory:
-          <Box fontSize={16} display="inline" fontColor="grey"> { path } </Box>
-          </Box>
+            </Box>
           </Box>
         </Box>
+        <Box className={classes.openlinksbuttonbox}>
+          <OpenLinksButton state={ {selected, setSelected} } itemState = { { data, setData } } userState = { {user, setUser} }/>
+        </Box>
       </Box>
-      <Box className={classes.openlinksbuttonbox}>
-        <OpenLinksButton state={ {selected, setSelected} } itemState = { { data, setData } } userState = { {user, setUser} }/>
-      </Box>
-    </Box>
     </div>
   );}
 }
