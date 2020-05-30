@@ -13,7 +13,7 @@ import 'typeface-roboto';
 import { makeStyles } from '@material-ui/core/styles';
 import { grey } from '@material-ui/core/colors';
 import logo from './logo.png';
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Typography } from '@material-ui/core';
 import 'firebase/auth';
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
@@ -92,6 +92,7 @@ function App() {
       </Box>
       <Box>
         <Box marginTop="10px">
+            <Typography>learn react</Typography>
             <Grid container justify='center' style={{paddingBottom: "10px"}}>
               <Grid item key="add-link-button">
                 <AddLink state = { {path, setPath} } userState= {{user, setUser}} />
