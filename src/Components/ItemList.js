@@ -43,12 +43,12 @@ const ItemList = ({ state,itemState, userState, selectedState }) => {
             (item.type === "folder") ? 
               (
                 <Grid item>
-                  <Folder item= {item} state={state} selectedState = {selectedState} userState = {    userState } itemList = { items }/>
+                  <Folder item= {item} state={state} selectedState = {selectedState} itemList = { items }/>
                 </Grid>
               ) :  
               (
                 <Grid item>
-                  <Link item={item} state= { selectedState } userState = { userState }/>
+                  <Link item={item} state= { selectedState }/>
                 </Grid> ))
           
         }

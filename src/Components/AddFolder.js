@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-const AddFolder = ( { state, userState } ) => {
+const AddFolder = ( { state } ) => {
 
   const [colorState, setColor] = React.useState("#DCDFE7");
 
@@ -61,10 +61,9 @@ const AddFolder = ( { state, userState } ) => {
     setOpen(false);
   };
 
-  const updateJSON = ( { state, userState }, color ) => {
+  const updateJSON = ( { state }, color ) => {
     // Get a key for a new Post.
-    const userUID = userState.user.uid;
-    var newItemKey = firebase.database().ref("users").child(userUID).push().key;
+    var newItemKey = firebase.database().ref("data").push().key;
     
     var item = {
       "name": document.getElementById('folderTitle').value,
@@ -76,7 +75,7 @@ const AddFolder = ( { state, userState } ) => {
     };
   
     // Write the new post's data simultaneously in the posts list and the user's post list.
-    firebase.database().ref("users/" + userUID + "/" + newItemKey).set(item);
+    firebase.database().ref("data/" + newItemKey).set(item);
     handleClose();
     document.getElementById('folderTitle').value = "";
     return;
@@ -98,7 +97,7 @@ const AddFolder = ( { state, userState } ) => {
       </ButtonGroup>
       <ButtonGroup>
         <Button onClick = {handleClose}>Cancel</Button>
-        <Button className = {classes.folderColor} onClick = { () => updateJSON({state, userState}, colorState)}>Add Folder</Button>
+        <Button className = {classes.folderColor} onClick = { () => updateJSON({state}, colorState)}>Add Folder</Button>
       </ButtonGroup>
     </div>
   );

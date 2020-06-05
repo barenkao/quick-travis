@@ -27,7 +27,7 @@ const empty = (selected_len) => {
   }
 }
 
-const OpenLinksButton = ({ state, itemState, userState }) => {
+const OpenLinksButton = ({ state, itemState }) => {
   const classes = useStyles();
   const openLinks = (itemRef) => {
     itemRef.child("url").once("value").then(function(snapshot) {
@@ -44,7 +44,7 @@ const OpenLinksButton = ({ state, itemState, userState }) => {
   const handleLinks = () => {
     var id;
     for(id of state.selected.selectedItems) {
-      var itemRef = firebase.database().ref("users/" + userState.user.uid + "/" + id);
+      var itemRef = firebase.database().ref("data/" + id);
  
       itemRef.child("type").on("value", function(snapshot) {
         console.log(id);
@@ -53,7 +53,7 @@ const OpenLinksButton = ({ state, itemState, userState }) => {
         if (itemType == "link") {
           
           //console.log(id);
-          itemRef = firebase.database().ref("users/" + userState.user.uid + "/" + id);
+          itemRef = firebase.database().ref("data/" + id);
           console.log(itemRef);
           openLinks(itemRef);
           state.setSelected({ selectedItems: []});
@@ -72,7 +72,7 @@ const OpenLinksButton = ({ state, itemState, userState }) => {
               for(var item of currItems) {
                 if (item.type == "link") {
                   console.log("opening a link inside of a folder");
-                  var currItemRef = firebase.database().ref("users/" + userState.user.uid + "/" + item.id);
+                  var currItemRef = firebase.database().ref("data/" + item.id);
                   openLinks(currItemRef);
                 }
               }

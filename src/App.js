@@ -53,7 +53,6 @@ function App() {
 
   const [data, setData] = useState({});
 
-  const [user, setUser] = useState(null);
 
   const [selected, setSelected] = useState({ selectedItems: []});
 
@@ -61,34 +60,16 @@ function App() {
     //console.log("running useEffect");
     const handleData = snap => {
 
-      if(user != null){
-        if (snap.val()){ 
-          const uid = user.uid;
-          setData(snap.val().users[uid]);
+      if (snap.val()){ 
+          setData(snap.val());
       }
-    }}
+    }
     db.on('value', handleData, error => alert(error));
     return () => { db.off('value', handleData); };
-  }, [user]);
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(setUser);
-
   }, []);
-
-  if (user == null) {
-    return (
-      <div>
-        <Authentication state={ {user, setUser} } />
-        <p>learn react</p>
-      </div>
-    )}
-  
-  else {
 
   return ( 
     <div>
-      <Authentication state={ {user, setUser} } />
     <Box margin={15} justifyContent="center" margin="20px !important">
       <Box textAlign="center" justifyContent="center" marginBottom="20px">
         <img src={logo} alt="Logo"/>
@@ -98,13 +79,13 @@ function App() {
             <p>learn react</p>
             <Grid container justify='center' style={{paddingBottom: "10px"}}>
               <Grid item key="add-link-button">
-                <AddLink state = { {path, setPath} } userState= {{user, setUser}} />
+                <AddLink state = { {path, setPath} } />
               </Grid>
               <Grid item key="add-folder-button">
-                <AddFolder state = { {path, setPath}} userState = {{user, setUser}} />
+                <AddFolder state = { {path, setPath}} />
               </Grid>
               <Grid item key="delete-link-button">
-                <DeleteLinksButton state={ {selected, setSelected} } itemState = { { data, setData } } userState = { {user, setUser} }/>
+                <DeleteLinksButton state={ {selected, setSelected} } itemState = { { data, setData } }/>
               </Grid>
             </Grid>
             <Box 
@@ -118,7 +99,7 @@ function App() {
               </Box>
             </DndProvider> 
               <DndProvider backend={Backend}>
-              <ItemList state = { {path, setPath} } itemState = { { data, setData } } userState = { {user, setUser} } selectedState={ { selected, setSelected } }/>
+              <ItemList state = { {path, setPath} } itemState = { { data, setData } }  selectedState={ { selected, setSelected } }/>
               </DndProvider>
             <Box fontSize={16} fontWeight={1000} marginTop="10px">
               Current directory:
@@ -128,11 +109,10 @@ function App() {
           </Box>
         </Box>
         <Box className={classes.openlinksbuttonbox}>
-          <OpenLinksButton state={ {selected, setSelected} } itemState = { { data, setData } } userState = { {user, setUser} }/>
+          <OpenLinksButton state={ {selected, setSelected} } itemState = { { data, setData } } />
         </Box>
       </Box>
     </div>
   );}
-}
 
 export default App;

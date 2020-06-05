@@ -12,12 +12,10 @@ import 'firebase/database';
 import EditIcon from '@material-ui/icons/Edit';
 import OpenModal from "./AddLink.js";
 
-const changePath = (item, newPath, userState) => {
+const changePath = (item, newPath) => {
   if (newPath != ""){
-    const userUID = userState.user.uid;
-
     // Write the new post's data simultaneously in the posts list and the user's post list.
-    firebase.database().ref("users/" + userUID + "/" + item.id + "/path").set(newPath);
+    firebase.database().ref("data/" + item.id + "/path").set(newPath);
   
   }
 }
@@ -43,7 +41,7 @@ const handleColor = (color) => {
   folderColor = color;
 };
 
-const Link = ({ item, state, userState }) => {
+const Link = ({ item, state }) => {
 
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
@@ -95,9 +93,8 @@ const Link = ({ item, state, userState }) => {
 
   const classes = useStyles();
 
-  const editJSON = ({ item, userState }, folderColor) => {
+  const editJSON = ({ item }, folderColor) => {
 
-    const userUID = userState.user.uid;
     const thisItemKey = item.id;
     var newItem = {
         "name": document.getElementById('editLinkName').value,
@@ -109,7 +106,7 @@ const Link = ({ item, state, userState }) => {
         "color": folderColor
     };
     // Write the new post's data simultaneously in the posts list and the user's post list.
-    firebase.database().ref("users/" + userUID + "/" + thisItemKey).set(newItem);
+    firebase.database().ref("data/" + thisItemKey).set(newItem);
     handleClose();
     return;
 }
@@ -131,7 +128,7 @@ const Link = ({ item, state, userState }) => {
       </ButtonGroup>
       <ButtonGroup>
         <Button onClick = {handleClose}>Cancel</Button>
-        <Button className = {classes.linkColor} onClick = { () => editJSON({item, userState}, colorState)}>Save</Button>
+        <Button className = {classes.linkColor} onClick = { () => editJSON({item}, colorState)}>Save</Button>
       </ButtonGroup>
     </div>
   );
@@ -143,7 +140,7 @@ const Link = ({ item, state, userState }) => {
     end(itemBox, monitor) {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
-      	changePath(item, dropResult.newPath, userState);
+      	changePath(item, dropResult.newPath);
       }
     },
 		collect: monitor => ({

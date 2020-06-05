@@ -8,7 +8,7 @@ import './colors.css';
 import { Modal, Container, Button, InputLabel, TextField, ButtonGroup} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const AddLink = ( { state, userState } ) => {
+const AddLink = ( { state } ) => {
 
   const [colorState, setColor] = React.useState("#DCDFE7");
 
@@ -89,14 +89,13 @@ const AddLink = ( { state, userState } ) => {
       </ButtonGroup>
       <ButtonGroup>
         <Button onClick = {handleClose}>Cancel</Button>
-        <Button className = {classes.linkColor} onClick = { () => updateJSON({state, userState}, colorState)}>Add Link</Button>
+        <Button className = {classes.linkColor} onClick = { () => updateJSON({state}, colorState)}>Add Link</Button>
       </ButtonGroup>
     </div>
   );
 
   const updateJSON = ( { state, userState }, color ) => {
-    const userUID = userState.user.uid;
-    var newItemKey = firebase.database().ref("users").child(userUID).push().key;
+    var newItemKey = firebase.database().ref("data").push().key;
     
     var item = {
       "name": document.getElementById('linkTitle').value,
@@ -109,7 +108,7 @@ const AddLink = ( { state, userState } ) => {
     };
   
     // Write the new post's data simultaneously in the posts list and the user's post list.
-    firebase.database().ref("users/" + userUID + "/" + newItemKey).set(item);
+    firebase.database().ref("data/" + newItemKey).set(item);
     handleClose();
     document.getElementById('linkTitle').value = "";
     document.getElementById('linkUrl').value = "";

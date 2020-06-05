@@ -13,13 +13,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DeleteLinksButton = ({ state, itemState, userState }) => {
+const DeleteLinksButton = ({ state, itemState }) => {
   const classes = useStyles();
 
   const deleteLinks = () => {
     var id;
     for(id of state.selected.selectedItems) {
-      var itemRef = firebase.database().ref("users/" + userState.user.uid + "/" + id);
+      var itemRef = firebase.database().ref("data/" + id);
       itemRef.child("type").on("value", function(snapshot) {
         var itemType = snapshot.val() || 'no type found';
 
@@ -37,12 +37,12 @@ const DeleteLinksButton = ({ state, itemState, userState }) => {
               var currItems = items.filter(item => item.path.includes(folderPath + "/" + folderName));
               //NOTE! when we delete, we also need to include the current folder
               for(var item of currItems) {
-                var currItemRef = firebase.database().ref("users/" + userState.user.uid + "/" + id);
+                var currItemRef = firebase.database().ref("data/" + id);
                 currItemRef.remove();
               }
               var currFolder = items.filter(item => item.name == folderName);
               for (var fold of currFolder) {
-                var currFolderRef = firebase.database().ref("users/" + userState.user.uid + "/" + id);
+                var currFolderRef = firebase.database().ref("data/" + id);
                 currFolderRef.remove();
               }
               

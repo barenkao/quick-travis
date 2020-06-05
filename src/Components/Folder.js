@@ -12,17 +12,16 @@ import EditIcon from '@material-ui/icons/Edit';
 
 const folder_color = blue[200];
 
-const changePath = (moveFolder, newPath, userState, allItems) => {
+const changePath = (moveFolder, newPath, allItems) => {
   if (newPath != ""){
-    const userUID = userState.user.uid;
     var currItems = allItems.filter(myItem => myItem.path.includes(moveFolder.path + "/" + moveFolder.name));
     for(var currItem of currItems){
       var idx = currItem.path.indexOf(moveFolder.name);
       var str = currItem.path.substring(idx, currItem.path.length);
       var newStr = newPath + "/" + str;
-      firebase.database().ref("users/" + userUID + "/" + currItem.id + "/path").set(newStr);
+      firebase.database().ref("data/" + currItem.id + "/path").set(newStr);
     }
-    firebase.database().ref("users/" + userUID + "/" + moveFolder.id + "/path").set(newPath);
+    firebase.database().ref("data/" + moveFolder.id + "/path").set(newPath);
   }
 }
 
@@ -111,8 +110,7 @@ const Folder = ({ item, state, selectedState, userState, itemList}) => {
 
   const classes = useStyles();
 
-  const editJSON = ({ item, userState }, colorState) => {
-    const userUID = userState.user.uid;
+  const editJSON = ({ item }, colorState) => {
     const thisItemKey = item.id;
     const newName = document.getElementById('editFolderName').value;
     var newItem = {
@@ -128,11 +126,11 @@ const Folder = ({ item, state, selectedState, userState, itemList}) => {
     for(var currItem of currItems){
 
       var newPath = currItem.path.replace(item.name, newName);
-      firebase.database().ref("users/" + userUID + "/" + currItem.id + "/path").set(newPath);
+      firebase.database().ref("data/" + currItem.id + "/path").set(newPath);
     }
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
-    firebase.database().ref("users/" + userUID + "/" + thisItemKey).set(newItem);
+    firebase.database().ref("data/" + thisItemKey).set(newItem);
 
     handleClose();
 }
